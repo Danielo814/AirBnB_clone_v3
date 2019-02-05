@@ -5,6 +5,7 @@ from flask import jsonify, abort, request
 from api.v1.views import app_views
 from models import storage
 from models.state import State
+from models.city import City
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
 def display_cities(state_id):
@@ -46,12 +47,11 @@ def create_city(state_id):
     new_dict = request.get_json()
     if type(new_dict) is dict:
         if "name" in new_dict.keys():
-            # state = State(name=new_dict["name"])
-            city = City(name=new_dict["name"])
+            city = City(name=new_dict["name"], state_id=state_id)
             for k, v in new_dict.items():
-                setattr(city, "state_id", state_id)
-                city.save()
-                return jsonify(state.to_dict()), 201
+                setattr(city, k, v)
+            city.save()
+            return jsonify(city.to_dict()), 201
         else:
             response = jsonify({"error": "Missing Name"}), 400
             return response
@@ -59,7 +59,19 @@ def create_city(state_id):
             response = jsonify({"error": "Not a JSON"}), 400
             return response
 
-"""
-TODO
-POST and PUT
-"""
+@app_views.route('/cities/<city_id>', methods=['PUT'])
+def update_city(city_id):
+    """updates a state object                                       
+    """
+    new_dict = request.get_json()
+    if type(new_dict) is dict:
+        city_obj = storage.get("City", city_id)
+        if city_obj is None:
+            abort(404)
+        for k, v in new_dict.items():
+            setattr(city_obj, k, v)
+        city_obj.save()
+        return jsonify(city_obj.to_dict()), 200
+    else:
+        response = jsonify({"error": "Not a JSON"}), 400
+        return response
