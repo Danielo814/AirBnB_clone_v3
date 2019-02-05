@@ -9,8 +9,12 @@ from os import getenv
 
 app = Flask(__name__)
 app.register_blueprint(app_views, url_prefix='/api/v1')
+app.config.update(JSONIFY_PRETTYPRINT_REGULAR=True)
+app.url_map.strict_slashes = False
+
 host = getenv('HBNB_API_HOST', default='0.0.0.0')
 port = int(getenv('HBNB_API_PORT', default=5000))
+
 
 @app.teardown_appcontext
 def teardown_app(self):
