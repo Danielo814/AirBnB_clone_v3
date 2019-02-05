@@ -36,6 +36,7 @@ def delete_state(state_id):
     try:
         state_obj = storage.get("State", state_id)
         storage.delete(state_obj)
+        storage.save()
         response = jsonify({}), 200
         return response
     except:
@@ -51,7 +52,8 @@ def create_state():
         if "name" in new_dict.keys():
             state = State(name=new_dict["name"])
             for k, v in new_dict.items():
-                setattr(state, k, v)
+                setattr(city, "state_id", state_id)
+
                 state.save()
                 return jsonify(state.to_dict()), 201
         else:
