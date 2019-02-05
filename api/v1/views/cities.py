@@ -59,7 +59,19 @@ def create_city(state_id):
             response = jsonify({"error": "Not a JSON"}), 400
             return response
 
-"""
-TODO
-POST and PUT
-"""
+@app_views.route('/cities/<city_id>', methods=['PUT'])
+def update_city(city_id):
+    """updates a state object                                       
+    """
+    new_dict = request.get_json()
+    if type(new_dict) is dict:
+        city_obj = storage.get("City", city_id)
+        if city_obj is None:
+            abort(404)
+        for k, v in new_dict.items():
+            setattr(city_obj, k, v)
+        city_obj.save()
+        return jsonify(city_obj.to_dict()), 200
+    else:
+        response = jsonify({"error": "Not a JSON"}), 400
+        return response
