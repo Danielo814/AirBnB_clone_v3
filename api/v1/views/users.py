@@ -9,6 +9,7 @@ from api.v1.views import app_views
 from models import storage
 from models.user import User
 
+
 @app_views.route('/users/', methods=['GET'])
 def display_users():
     """Retrieves the list of all user objects
@@ -19,6 +20,7 @@ def display_users():
         users_list.append(obj.to_dict())
     return jsonify(users_list)
 
+
 @app_views.route('/users/<user_id>/', methods=['GET'])
 def display_user(user_id):
     """Retrieves a user object
@@ -28,6 +30,7 @@ def display_user(user_id):
         return jsonify(user_obj.to_dict())
     except:
         abort(404)
+
 
 @app_views.route('/users/<user_id>/', methods=['DELETE'])
 def delete_user(user_id):
@@ -40,6 +43,7 @@ def delete_user(user_id):
         return jsonify({}), 200
     except:
         abort(404)
+
 
 @app_views.route('/users/', methods=['POST'])
 def create_user():
@@ -60,6 +64,7 @@ def create_user():
     else:
             return jsonify({"error": "Not a JSON"}), 400
 
+
 @app_views.route('/users/<user_id>', methods=['PUT'])
 def update_user(user_id):
     """Updates a user object
@@ -70,7 +75,8 @@ def update_user(user_id):
         if user_obj is None:
             abort(404)
         for k, v in new_dict.items():
-            setattr(user_obj, k, v)
+            if k not in ["id", "email", "created_at", "updated_at"]:
+                setattr(user_obj, k, v)
         user_obj.save()
         return jsonify(user_obj.to_dict()), 200
     else:
