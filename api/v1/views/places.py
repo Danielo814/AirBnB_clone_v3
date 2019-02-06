@@ -83,7 +83,7 @@ def update_place(place_id):
     """updates a place object
     """
     new_dict = request.get_json()
-    if type(new_dict) is dict:
+    if request.json:
         place_obj = storage.get("Place", place_id)
         if place_obj is None:
             abort(404)
