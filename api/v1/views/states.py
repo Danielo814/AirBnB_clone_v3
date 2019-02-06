@@ -52,10 +52,9 @@ def create_state():
         if "name" in new_dict.keys():
             state = State(name=new_dict["name"])
             for k, v in new_dict.items():
-                setattr(city, "state_id", state_id)
-
-                state.save()
-                return jsonify(state.to_dict()), 201
+                setattr(state, k, v)
+            state.save()
+            return jsonify(state.to_dict()), 201
         else:
             response = jsonify({"error": "Missing Name"}), 400
             return response
