@@ -7,7 +7,9 @@ from models import storage
 from models.state import State
 from models.city import City
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
 def display_cities(state_id):
     """Retrieves the list of all city
     objects of a state"""
@@ -20,15 +22,17 @@ def display_cities(state_id):
     else:
         abort(404)
 
+
 @app_views.route('/cities/<city_id>', methods=['GET'])
 def display_city(city_id):
     """Retrieves a city object
-    """ 
+    """
     try:
         city_obj = storage.get("City", city_id)
         return jsonify(city_obj.to_dict())
     except:
         abort(404)
+
 
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
 def delete_city(city_id):
@@ -43,11 +47,16 @@ def delete_city(city_id):
     except:
         abort(404)
 
+
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def create_city(state_id):
     """creates a city obj
     """
     new_dict = request.get_json()
+    """
+    if state_id not in [state.id for state in storage.all("State").values()]:
+        abort(404)
+    """
     if type(new_dict) is dict:
         if "name" in new_dict.keys():
             city = City(name=new_dict["name"], state_id=state_id)
@@ -62,9 +71,10 @@ def create_city(state_id):
             response = jsonify({"error": "Not a JSON"}), 400
             return response
 
+
 @app_views.route('/cities/<city_id>', methods=['PUT'])
 def update_city(city_id):
-    """updates a state object                                       
+    """updates a state object
     """
     new_dict = request.get_json()
     if type(new_dict) is dict:
