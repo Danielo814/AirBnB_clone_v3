@@ -8,7 +8,7 @@ from models.place import Place
 from models.city import City
 
 
-@app_views.route('/cities/<city_id>/places',
+@app_views.route('/cities/<uuid:city_id>/places',
                  methods=['GET'], strict_slashes=False)
 def display_places(city_id):
     """Retrieves the list of all places
@@ -25,7 +25,7 @@ def display_places(city_id):
         abort(404)
 
 
-@app_views.route('/places/<place_id>', methods=['GET'])
+@app_views.route('/places/<uuid:place_id>', methods=['GET'])
 def display_place(place_id):
     """Retrieves a place object
     """
@@ -36,7 +36,7 @@ def display_place(place_id):
         abort(404)
 
 
-@app_views.route('/places/<place_id>', methods=['DELETE'])
+@app_views.route('/places/<uuid:place_id>', methods=['DELETE'])
 def delete_place(place_id):
     """Deletes a place object
     """
@@ -50,7 +50,7 @@ def delete_place(place_id):
         abort(404)
 
 
-@app_views.route('/cities/<city_id>/places', methods=['POST'])
+@app_views.route('/cities/<uuid:city_id>/places', methods=['POST'])
 def create_place(city_id):
     """
     creates a new place
@@ -78,7 +78,7 @@ def create_place(city_id):
             return response
 
 
-@app_views.route('/places/<place_id>', methods=['PUT'])
+@app_views.route('/places/<uuid:place_id>', methods=['PUT'])
 def update_place(place_id):
     """updates a place object
     """
