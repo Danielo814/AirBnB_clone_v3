@@ -49,7 +49,7 @@ def delete_user(user_id):
 def create_user():
     """Creates a user object
     """
-    new_dict = request.get_json()
+    new_dict = request.get_json(silent=True)
     if type(new_dict) is dict:
         if "email" not in new_dict.keys():
             return jsonify({"error": "Missing email"}), 400
@@ -69,7 +69,7 @@ def create_user():
 def update_user(user_id):
     """Updates a user object
     """
-    new_dict = request.get_json()
+    new_dict = request.get_json(silent=True)
     if type(new_dict) is dict:
         user_obj = storage.get("User", user_id)
         if user_obj is None:
