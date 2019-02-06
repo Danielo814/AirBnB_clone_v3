@@ -53,10 +53,8 @@ def create_city(state_id):
     """creates a city obj
     """
     new_dict = request.get_json()
-    """
     if state_id not in [state.id for state in storage.all("State").values()]:
         abort(404)
-    """
     if type(new_dict) is dict:
         if "name" in new_dict.keys():
             city = City(name=new_dict["name"], state_id=state_id)
@@ -76,13 +74,14 @@ def create_city(state_id):
 def update_city(city_id):
     """updates a state object
     """
-    new_dict = request.get_json()
+    new_dict = request.get_json(silent=True)
     if type(new_dict) is dict:
         city_obj = storage.get("City", city_id)
         if city_obj is None:
             abort(404)
         for k, v in new_dict.items():
-            setattr(city_obj, k, v)
+            if k not in ["id", "state_id", "created_at", "updated_at"]:
+                setattr(city_obj, k, v)
         city_obj.save()
         return jsonify(city_obj.to_dict()), 200
     else:
