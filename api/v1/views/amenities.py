@@ -36,6 +36,7 @@ def delete_amenity(amenity_id):
     try:
         amenity_obj = storage.get("Amenity", amenity_id)
         storage.delete(amenity_obj)
+        storage.save()
         response = jsonify({}), 200
         return response
     except:
