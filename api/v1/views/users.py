@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+users module containing methods for retreiving
+and updating user objects
+"""
 
 from flask import jsonify, abort, request
 from api.v1.views import app_views
