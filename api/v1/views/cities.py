@@ -45,6 +45,8 @@ def delete_city(city_id):
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'])
 def create_city(state_id):
+    """creates a city obj
+    """
     new_dict = request.get_json()
     if type(new_dict) is dict:
         if "name" in new_dict.keys():
