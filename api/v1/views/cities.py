@@ -23,7 +23,8 @@ def display_cities(state_id):
         abort(404)
 
 
-@app_views.route('/cities/<city_id>', methods=['GET'])
+@app_views.route('/cities/<city_id>', methods=['GET'],
+                 strict_slashes=False)
 def display_city(city_id):
     """Retrieves a city object
     """
@@ -34,7 +35,8 @@ def display_city(city_id):
         abort(404)
 
 
-@app_views.route('/cities/<city_id>', methods=['DELETE'])
+@app_views.route('/cities/<city_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_city(city_id):
     """Deletes a city object
     """
@@ -48,11 +50,12 @@ def delete_city(city_id):
         abort(404)
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'])
+@app_views.route('/states/<state_id>/cities', methods=['POST'],
+                 strict_slashes=False)
 def create_city(state_id):
     """creates a city obj
     """
-    new_dict = request.get_json()
+    new_dict = request.get_json(silent=True)
     if state_id not in [state.id for state in storage.all("State").values()]:
         abort(404)
     if type(new_dict) is dict:
@@ -70,7 +73,8 @@ def create_city(state_id):
             return response
 
 
-@app_views.route('/cities/<city_id>', methods=['PUT'])
+@app_views.route('/cities/<city_id>', methods=['PUT'],
+                 strict_slashes=False)
 def update_city(city_id):
     """updates a state object
     """
