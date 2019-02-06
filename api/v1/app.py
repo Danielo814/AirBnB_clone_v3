@@ -13,8 +13,8 @@ app.register_blueprint(app_views, url_prefix='/api/v1')
 app.config.update(JSONIFY_PRETTYPRINT_REGULAR=True)
 app.url_map.strict_slashes = False
 
-host = os.getenv('HBNB_API_HOST', default='0.0.0.0')
-port = int(os.getenv('HBNB_API_PORT', default='5000'))
+bnbhost = os.getenv('HBNB_API_HOST', default='0.0.0.0')
+bnbport = os.getenv('HBNB_API_PORT', default='5000')
 
 
 @app.teardown_appcontext
@@ -27,4 +27,4 @@ def page_not_found(error):
     return make_response(jsonify({"error": "Not found"}), 404)
 
 if __name__ == "__main__":
-    app.run(host=host, port=port, threaded=True)
+    app.run(host=bnbhost, port=int(bnbport), threaded=True)
