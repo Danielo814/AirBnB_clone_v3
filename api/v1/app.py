@@ -9,7 +9,7 @@ from api.v1.views import app_views
 import os
 
 app = Flask(__name__)
-app.register_blueprint(app_views, url_prefix='/api/v1')
+app.register_blueprint(app_views)
 app.config.update(JSONIFY_PRETTYPRINT_REGULAR=True)
 app.url_map.strict_slashes = False
 
