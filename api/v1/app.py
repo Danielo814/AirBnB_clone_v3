@@ -27,4 +27,4 @@ def page_not_found(error):
     return make_response(jsonify({"error": "Not found"}), 404)
 
 if __name__ == "__main__":
-    app.run(host=host, port=port)
+    app.run(host=host, port=port, threaded=True)

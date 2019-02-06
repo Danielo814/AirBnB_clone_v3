@@ -37,6 +37,7 @@ def delete_city(city_id):
     try:
         city_obj = storage.get("City", city_id)
         storage.delete(city_obj)
+        storage.save()
         response = jsonify({}), 200
         return response
     except:

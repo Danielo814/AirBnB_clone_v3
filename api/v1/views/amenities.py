@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Module for State API endpoints"""
+"""Module for Amenity API endpoints"""
 
 from flask import jsonify, abort, request
 from api.v1.views import app_views
@@ -7,9 +7,9 @@ from models import storage
 from models.amenity import Amenity
 
 
-@app_views.route('/amenitites', methods=['GET'])
-def show_amenities():
-    """Retrieves the list of all State objects
+@app_views.route('/amenities/', methods=['GET'])
+def display_amenities():
+    """Retrieves the list of all amenity objects
     """
     amenities = storage.all("Amenity").values()
     amenities_list = []
@@ -20,7 +20,7 @@ def show_amenities():
 
 @app_views.route('/amenities/<uuid:amenity_id>', methods=['GET'])
 def display_amenity(amenity_id):
-    """display a state based on id
+    """display a amenity based on id
     """
     try:
         amenity_obj = storage.get("Amenity", amenity_id)
@@ -31,11 +31,12 @@ def display_amenity(amenity_id):
 
 @app_views.route('/amenities/<uuid:amenity_id>', methods=['DELETE'])
 def delete_amenity(amenity_id):
-    """deletes a state based on id
+    """deletes a amenity based on id
     """
     try:
         amenity_obj = storage.get("Amenity", amenity_id)
         storage.delete(amenity_obj)
+        storage.save()
         response = jsonify({}), 200
         return response
     except:
@@ -44,7 +45,7 @@ def delete_amenity(amenity_id):
 
 @app_views.route('/amenities/', methods=['POST'])
 def create_amenity():
-    """creates instance of a new state
+    """creates instance of a new amenity
     """
     new_dict = request.get_json()
     if type(new_dict) is dict:
@@ -64,7 +65,7 @@ def create_amenity():
 
 @app_views.route('/amenities/<uuid:amenity_id>', methods=['PUT'])
 def update_amenity(amenity_id):
-    """updates a state object
+    """updates an amenity object
     """
     new_dict = request.get_json()
     if type(new_dict) is dict:
