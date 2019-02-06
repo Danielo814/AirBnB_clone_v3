@@ -19,11 +19,17 @@ bnbport = os.getenv('HBNB_API_PORT', default='5000')
 
 @app.teardown_appcontext
 def teardown_app(self):
+    """
+    teardown by closing storage
+    """
     storage.close()
 
 
 @app.errorhandler(404)
 def page_not_found(error):
+    """
+    error message with invalid endpoint
+    """
     return make_response(jsonify({"error": "Not found"}), 404)
 
 if __name__ == "__main__":
