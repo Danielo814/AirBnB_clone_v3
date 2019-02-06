@@ -74,7 +74,8 @@ def update_state(state_id):
         if state_obj is None:
             abort(404)
         for k, v in new_dict.items():
-            setattr(state_obj, k, v)
+            if k not in ["id", "created_at", "updated_at"]:
+                setattr(state_obj, k, v)
         state_obj.save()
         return jsonify(state_obj.to_dict()), 200
     else:
