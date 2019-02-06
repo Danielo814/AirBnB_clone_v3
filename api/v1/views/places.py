@@ -25,7 +25,8 @@ def display_places(city_id):
         abort(404)
 
 
-@app_views.route('/places/<uuid:place_id>', methods=['GET'])
+@app_views.route('/places/<uuid:place_id>', methods=['GET'],
+                 strict_slashes=False)
 def display_place(place_id):
     """Retrieves a place object
     """
@@ -36,7 +37,8 @@ def display_place(place_id):
         abort(404)
 
 
-@app_views.route('/places/<uuid:place_id>', methods=['DELETE'])
+@app_views.route('/places/<uuid:place_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_place(place_id):
     """Deletes a place object
     """
@@ -50,7 +52,8 @@ def delete_place(place_id):
         abort(404)
 
 
-@app_views.route('/cities/<uuid:city_id>/places', methods=['POST'])
+@app_views.route('/cities/<uuid:city_id>/places', methods=['POST'],
+                 strict_slashes=False)
 def create_place(city_id):
     """
     creates a new place
@@ -58,7 +61,7 @@ def create_place(city_id):
     city = storage.get("City", city_id)
     if not city:
         abort(404)
-    new_dict = request.get_json()
+    new_dict = request.get_json(silent=True)
     if type(new_dict) is dict:
         if "user_id" not in new_dict.keys():
             return jsonify({"error": "Missing user_id"}), 400
@@ -78,11 +81,12 @@ def create_place(city_id):
             return response
 
 
-@app_views.route('/places/<uuid:place_id>', methods=['PUT'])
+@app_views.route('/places/<uuid:place_id>', methods=['PUT'],
+                 strict_slashes=False)
 def update_place(place_id):
     """updates a place object
     """
-    new_dict = request.get_json()
+    new_dict = request.get_json(silent=True)
     if type(new_dict) is dict:
         place_obj = storage.get("Place", place_id)
         if place_obj is None:
