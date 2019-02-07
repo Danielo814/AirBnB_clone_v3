@@ -6,9 +6,11 @@ from api.v1.views import app_views
 from flask import jsonify, abort, request
 from models.place import Place
 from models.review import Review
+from models.user import User
 
 
-@app_views.route('/places/<place_id>/reviews/', methods=['GET'], strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews/', methods=['GET'],
+                 strict_slashes=False)
 def display_reviews(place_id):
     """Retrieves the list of all review objects
     of a place
@@ -25,7 +27,8 @@ def display_reviews(place_id):
         abort(404)
 
 
-@app_views.route('/places/reviews/<review_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/places/reviews/<review_id>', methods=['GET'],
+                 strict_slashes=False)
 def display_review(review_id):
     """Retrieves a review object
     """
@@ -36,7 +39,8 @@ def display_review(review_id):
         abort(404)
 
 
-@app_views.route('/reviews/<review_id>/', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/reviews/<review_id>/', methods=['DELETE'],
+                 strict_slashes=False)
 def delete_review(review_id):
     """Deletes a review object
     """
@@ -49,15 +53,18 @@ def delete_review(review_id):
         abort(404)
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['POST'], strict_slashes=False)
+@app_views.route('/places/<place_id>/reviews', methods=['POST'],
+                 strict_slashes=False)
 def create_review(place_id):
+    """Create a review object
+    """
     place = storage.get("Place", place_id)
     if not place:
         abort(404)
     new_dict = request.get_json(silent=True)
     if type(new_dict) is dict:
         if "user_id" not in new_dict.keys():
-            return jsonify({"error": "Missing user_id"}), 400   
+            return jsonify({"error": "Missing user_id"}), 400
         user = storage.get("User", new_dict["user_id"])
         if user is None:
             abort(404)
@@ -73,15 +80,19 @@ def create_review(place_id):
         return jsonify({"error": "Not a JSON"}), 400
 
 
-@app_views.route('/reviews/<review_id>/', methods=['PUT'], strict_slashes=False)
+@app_views.route('/reviews/<review_id>/', methods=['PUT'],
+                 strict_slashes=False)
 def update_review(review_id):
+    """Update a review object
+    """
     new_dict = request.get_json(silent=True)
     if type(new_dict) is dict:
         review_obj = storage.get("Review", review_id)
         if review_obj is None:
             abort(404)
         for k, v in new_dict.items():
-            if k not in ["id", "user_id", "place_id", "created_at", "updated_at"]:
+            if k not in ["id", "user_id", "place_id",
+                         "created_at", "updated_at"]:
                 setattr(review_obj, k, v)
         review_obj.save()
         return jsonify(review_obj.to_dict()), 200
