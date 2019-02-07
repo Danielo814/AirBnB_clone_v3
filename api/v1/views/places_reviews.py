@@ -32,10 +32,10 @@ def display_reviews(place_id):
 def display_review(review_id):
     """Retrieves a review object
     """
-    try:
-        review_obj = storage.get("Review", review_id)
+    review_obj = storage.get("Review", review_id)
+    if review_obj:
         return jsonify(review_obj.to_dict())
-    except:
+    else:
         abort(404)
 
 
@@ -44,12 +44,12 @@ def display_review(review_id):
 def delete_review(review_id):
     """Deletes a review object
     """
-    try:
-        review_obj = storage.get("Review", review_id)
+    review_obj = storage.get("Review", review_id)
+    if review_obj:
         storage.delete(review_obj)
         storage.save()
         return jsonify({}), 200
-    except:
+    else:
         abort(404)
 
 
