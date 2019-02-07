@@ -9,7 +9,7 @@ from models.review import Review
 from models.user import User
 
 
-@app_views.route('/places/<uuid:place_id>/reviews/', methods=['GET'],
+@app_views.route('/places/<place_id>/reviews/', methods=['GET'],
                  strict_slashes=False)
 def display_reviews(place_id):
     """Retrieves the list of all review objects
@@ -27,7 +27,7 @@ def display_reviews(place_id):
         abort(404)
 
 
-@app_views.route('/places/reviews/<uuid:review_id>', methods=['GET'],
+@app_views.route('/places/reviews/<review_id>', methods=['GET'],
                  strict_slashes=False)
 def display_review(review_id):
     """Retrieves a review object
@@ -39,7 +39,7 @@ def display_review(review_id):
         abort(404)
 
 
-@app_views.route('/reviews/<uuid:review_id>/', methods=['DELETE'],
+@app_views.route('/reviews/<review_id>/', methods=['DELETE'],
                  strict_slashes=False)
 def delete_review(review_id):
     """Deletes a review object
@@ -53,7 +53,7 @@ def delete_review(review_id):
         abort(404)
 
 
-@app_views.route('/places/<uuid:place_id>/reviews', methods=['POST'],
+@app_views.route('/places/<place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
 def create_review(place_id):
     """Create a review object
@@ -80,15 +80,15 @@ def create_review(place_id):
         return jsonify({"error": "Not a JSON"}), 400
 
 
-@app_views.route('/reviews/<uuid:review_id>/', methods=['PUT'],
+@app_views.route('/reviews/<review_id>/', methods=['PUT'],
                  strict_slashes=False)
 def update_review(review_id):
     """Update a review object
     """
+    new_dict = request.get_json(silent=True)
     review_obj = storage.get("Review", review_id)
     if review_obj is None:
         abort(404)
-    new_dict = request.get_json(silent=True)
     if type(new_dict) is dict:
         for k, v in new_dict.items():
             if k not in ["id", "user_id", "place_id",
