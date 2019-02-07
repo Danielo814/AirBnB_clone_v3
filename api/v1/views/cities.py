@@ -28,10 +28,10 @@ def display_cities(state_id):
 def display_city(city_id):
     """Retrieves a city object
     """
-    try:
-        city_obj = storage.get("City", city_id)
+    city_obj = storage.get("City", city_id)
+    if city_obj:
         return jsonify(city_obj.to_dict())
-    except:
+    else:
         abort(404)
 
 
@@ -40,13 +40,13 @@ def display_city(city_id):
 def delete_city(city_id):
     """Deletes a city object
     """
-    try:
-        city_obj = storage.get("City", city_id)
+    city_obj = storage.get("City", city_id)
+    if city_obj:
         storage.delete(city_obj)
         storage.save()
         response = jsonify({}), 200
         return response
-    except:
+    else:
         abort(404)
 
 
