@@ -93,7 +93,7 @@ class TestFileStorage(unittest.TestCase):
         storage = DBStorage()
         test_state = State()
         test_state.name = "Arkansas"
-        storage.new(test_state)
+        test_state.save(test_state)
         test_id = test_state.id
         test_object = storage.get("State", str(test_id))
         self.assertEqual(test_object.name, "Arkansas")
@@ -112,6 +112,10 @@ class TestFileStorage(unittest.TestCase):
         creation3.name = "Maine"
         creation4.name = "Wisconsin"
         creation5.name = "Ohio"
-        storage.save()
+        creation1.save()
+        creation2.save()
+        creation3.save()
+        creation4.save()
+        creation5.save()
         result2 = storage.count("State")
         self.assertEqual((result1 + 5), result2)
