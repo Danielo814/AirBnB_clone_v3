@@ -20,7 +20,7 @@ def display_reviews(place_id):
     reviews = storage.all("Review")
     if place:
         for k, v in reviews.items():
-            if v.place_id == str(place_id):
+            if v.place_id == place_id:
                 reviews_list.append(v.to_dict())
         return jsonify(reviews_list)
     else:
@@ -85,11 +85,11 @@ def create_review(place_id):
 def update_review(review_id):
     """Update a review object
     """
+    review_obj = storage.get("Review", review_id)
+    if review_obj is None:
+        abort(404)
     new_dict = request.get_json(silent=True)
     if type(new_dict) is dict:
-        review_obj = storage.get("Review", review_id)
-        if review_obj is None:
-            abort(404)
         for k, v in new_dict.items():
             if k not in ["id", "user_id", "place_id",
                          "created_at", "updated_at"]:
