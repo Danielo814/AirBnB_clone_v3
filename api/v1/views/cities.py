@@ -84,8 +84,7 @@ def update_city(city_id):
         if city_obj is None:
             abort(404)
         for k, v in new_dict.items():
-            if k not in ["id", "state_id", "created_at", "updated_at"]:
-                setattr(city_obj, k, v)
+            setattr(city_obj, k, v)
         city_obj.save()
         return jsonify(city_obj.to_dict()), 200
     else:
