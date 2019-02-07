@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+ #!/usr/bin/python3
 """
 Contains the TestDBStorageDocs and TestDBStorage classes
 """
@@ -86,3 +86,32 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """Tests for get method"""
+        storage = DBStorage()
+        test_state = State()
+        test_state.name = "Arkansas"
+        storage.new(test_state)
+        test_id = test_state.id
+        test_object = storage.get("State", str(test_id))
+        self.assertEqual(test_object.name, "Arkansas")
+
+    def test_count(self):
+        """Tests for count method"""
+        storage = DBStorage()
+        result1 = storage.count("State")
+        creation1 = State()
+        creation2 = State()
+        creation3 = State()
+        creation4 = State()
+        creation5 = State()
+        creation1.name = "Wyoming"
+        creation2.name = "Florida"
+        creation3.name = "Maine"
+        creation4.name = "Wisconsin"
+        creation5.name = "Ohio"
+        storage.save()
+        result2 = storage.count("State")
+        self.assertEqual((result1 + 5), result2)
