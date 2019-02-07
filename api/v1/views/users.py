@@ -25,10 +25,10 @@ def display_users():
 def display_user(user_id=""):
     """Retrieves a user object
     """
-    try:
-        user_obj = storage.get("User", user_id)
+    user_obj = storage.get("User", user_id)
+    if user_obj:
         return jsonify(user_obj.to_dict())
-    except:
+    else:
         abort(404)
 
 
@@ -36,12 +36,12 @@ def display_user(user_id=""):
 def delete_user(user_id):
     """Retrieves a user object
     """
-    try:
-        user_obj = storage.get("User", user_id)
+    user_obj = storage.get("User", user_id)
+    if user_obj:
         storage.delete(user_obj)
         storage.save()
         return jsonify({}), 200
-    except:
+    else:
         abort(404)
 
 
