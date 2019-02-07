@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 """Module for Reviews API endpoints"""
 
-from models import storage
 from api.v1.views import app_views
 from flask import jsonify, abort, request
+from models import storage
 from models.place import Place
 from models.review import Review
 from models.user import User
 
 
-@app_views.route('/places/<place_id>/reviews/', methods=['GET'],
+@app_views.route('/places/<uuid:place_id>/reviews/', methods=['GET'],
                  strict_slashes=False)
 def display_reviews(place_id):
     """Retrieves the list of all review objects
@@ -27,19 +27,19 @@ def display_reviews(place_id):
         abort(404)
 
 
-@app_views.route('/places/reviews/<review_id>', methods=['GET'],
+@app_views.route('/places/reviews/<uuid:review_id>', methods=['GET'],
                  strict_slashes=False)
 def display_review(review_id):
     """Retrieves a review object
     """
     try:
-        review_obj = storage.get("Review", place_id)
+        review_obj = storage.get("Review", review_id)
         return jsonify(review_obj.to_dict())
     except:
         abort(404)
 
 
-@app_views.route('/reviews/<review_id>/', methods=['DELETE'],
+@app_views.route('/reviews/<uuid:review_id>/', methods=['DELETE'],
                  strict_slashes=False)
 def delete_review(review_id):
     """Deletes a review object
@@ -53,7 +53,7 @@ def delete_review(review_id):
         abort(404)
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['POST'],
+@app_views.route('/places/<uuid:place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
 def create_review(place_id):
     """Create a review object
@@ -80,7 +80,7 @@ def create_review(place_id):
         return jsonify({"error": "Not a JSON"}), 400
 
 
-@app_views.route('/reviews/<review_id>/', methods=['PUT'],
+@app_views.route('/reviews/<uuid:review_id>/', methods=['PUT'],
                  strict_slashes=False)
 def update_review(review_id):
     """Update a review object
