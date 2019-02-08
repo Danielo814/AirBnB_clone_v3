@@ -20,14 +20,14 @@ def display_reviews(place_id):
     reviews = storage.all("Review")
     if place:
         for k, v in reviews.items():
-            if v.place_id == place_id:
+            if v.place_id == str(place_id):
                 reviews_list.append(v.to_dict())
         return jsonify(reviews_list)
     else:
         abort(404)
 
 
-@app_views.route('/places/reviews/<review_id>', methods=['GET'],
+@app_views.route('/reviews/<review_id>', methods=['GET'],
                  strict_slashes=False)
 def display_review(review_id):
     """Retrieves a review object
